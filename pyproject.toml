@@ -1,0 +1,15 @@
+[project]
+name = "employee-salary-prediction"
+version = "0.1.0"
+description = "This project is to predict the salary of employee based on various features listed on the platform"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.10.9",
+    "nbformat>=5.10.4",
+    "pandas>=3.0.3",
+    "plotly>=6.7.0",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "xgboost>=3.2.0",
+]
