@@ -1,9 +1,14 @@
+<div align='center'>
+    
 # Employee Salary Prediction
 
-![Docker CI](https://github.com/Stewie-pixel/employee-salary-prediction/.github/workflows/docker-image.yml/badge.svg)
+![Docker CI](https://github.com/Stewie-pixel/employee-salary-prediction/actions/workflows/docker-image.yml/badge.svg)
+[![Dataset](https://img.shields.io/badge/Dataset-250k%20rows-blue?logo=kaggle)](https://www.kaggle.com)
+[![XGBoost R²](https://img.shields.io/badge/XGBoost%20R²-0.4454-success?logo=python)](https://github.com/Stewie-pixel/employee-salary-prediction)
 
 A machine learning pipeline to predict employee salaries using Linear Regression and XGBoost, packaged as a Docker container for consistent and reproducible execution.
 
+</div>
 
 ## Table of Contents
 1. [Overview](#overview)
