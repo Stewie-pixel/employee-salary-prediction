@@ -1,5 +1,7 @@
 # Employee Salary Prediction
 
+![Docker CI](https://github.com/Stewie-pixel/employee-salary-prediction/.github/workflows/docker-image.yml/badge.svg)
+
 A machine learning pipeline to predict employee salaries using Linear Regression and XGBoost, packaged as a Docker container for consistent and reproducible execution.
 
 
@@ -9,9 +11,9 @@ A machine learning pipeline to predict employee salaries using Linear Regression
 3. [Project Structure](#project-structure)
 4. [Pipeline](#pipeline)
 5. [Models](#models)
-6. [Results](#results)
-7. [Getting Started](#getting-started)
-8. [Running with Docker](#running-with-docker)
+6. [Getting Started](#getting-started)
+7. [Running with Docker](#running-with-docker)
+8. [CI/CD](#cicd)
 9. [Tech Stack](#tech-stack)
 
 
@@ -48,6 +50,9 @@ This project builds an end-to-end salary prediction pipeline covering data explo
 
 ```
 employee-salary-prediction/
+├── .github/
+│   └── workflows/
+│       └── docker-ci.yml
 ├── data/
 │   └── employee_salary_dataset.csv
 ├── models/
@@ -154,6 +159,38 @@ docker run -v ./models:/app/models employee-salary-prediction
 The `models/` directory is mounted as a volume so updated `.pkl` files are picked up without rebuilding the image.
 
 
+## CI/CD
+
+This project uses GitHub Actions for continuous integration and delivery.
+
+**Workflow: `.github/workflows/docker-ci.yml`**
+
+| Trigger | Action |
+|---|---|
+| Push to `main` | Build → Test → Push to Docker Hub |
+| Pull Request to `main` | Build → Test only |
+
+**Pipeline steps:**
+1. Checkout repository
+2. Set up Docker Buildx
+3. Build Docker image tagged with `github.sha` and `latest`
+4. Verify image exists
+5. Run container and validate predictions output
+6. Push to Docker Hub on merge to `main` only
+
+**Docker Hub image:**
+```
+stewie-pixel/employee-salary-prediction:latest
+```
+
+**Required GitHub Secrets:**
+
+| Secret | Description |
+|---|---|
+| `DOCKER_USERNAME` | Docker Hub username |
+| `DOCKER_PASSWORD` | Docker Hub access token |
+
+
 ## Tech Stack
 
 | Tool | Purpose |
@@ -166,5 +203,6 @@ The `models/` directory is mounted as a volume so updated `.pkl` files are picke
 | seaborn / matplotlib | Data visualization |
 | Jupyter Notebook | Exploratory pipeline |
 | Docker | Containerization |
+| GitHub Actions | CI/CD pipeline |
 | uv | Package management |
 | VS Code | Development environment |
