@@ -44,5 +44,7 @@ jobs:
       - name: Push Docker image to Docker Hub
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          docker push employee-salary-prediction:${{ github.sha }}
-          docker push employee-salary-prediction:latest
+          docker tag employee-salary-prediction:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:${{ github.sha }}
+          docker tag employee-salary-prediction:latest ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:latest
