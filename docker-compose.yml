@@ -1,14 +1,13 @@
 version: '3.8'
-
 services:
   salary-prediction:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: employee-salary-prediction
+    ports:
+      - "8000:8000"
     volumes:
       - ./models:/app/models
     environment:
       - PYTHONUNBUFFERED=1
-    stdin_open: true
-    tty: true
