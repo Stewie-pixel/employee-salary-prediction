@@ -9,7 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,11 +27,16 @@ jobs:
       - name: Verify Docker image
         run: docker images employee-salary-prediction
 
-      - name: Run container and verify predictions
+      - name: Run container and verify API health
         run: |
-          docker run --rm \
+          docker run -d \
+            -p 8000:8000 \
             -v ${{ github.workspace }}/models:/app/models \
+            --name salary-api \
             employee-salary-prediction:latest
+          sleep 5
+          curl --fail http://localhost:8000/health
+          docker stop salary-api
 
       - name: Log in to Docker Hub
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -48,3 +52,19 @@ jobs:
           docker tag employee-salary-prediction:latest ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:latest
+
+      - name: Trigger central deployment
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.CENTRAL_REPO_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/Stewie-pixel/AI-project-collection/dispatches \
+            -d '{
+              "event_type": "deploy-model",
+              "client_payload": {
+                "model_name": "employee-salary-prediction",
+                "docker_image": "${{ secrets.DOCKER_USERNAME }}/employee-salary-prediction:latest",
+                "subdomain": "employee-salary"
+              }
+            }'
