@@ -66,8 +66,6 @@ jobs:
               "event_type": "deploy-model",
               "client_payload": {
                 "model_name": "employee-salary-prediction",
-                "docker_image": "edwardes/employee-salary-prediction:latest",
-                "subdomain": "employee-salary",
                 "title": "Employee Salary Prediction",
                 "models": "Linear Regression + XGBoost",
                 "domain": "Regression",
