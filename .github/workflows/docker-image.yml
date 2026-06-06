@@ -1,4 +1,4 @@
-name: Deploy to Hugging Face Space
+name: Deploy HF
 
 on:
   push:
@@ -50,6 +50,7 @@ jobs:
               repo_type="space",
               token="${{ secrets.HF_TOKEN }}",
               commit_message="deploy: ${{ github.sha }}"
+              ignore_patterns=["README.md"]
           )
           print("Upload complete")
           EOF
