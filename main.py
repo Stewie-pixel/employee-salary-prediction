@@ -11,6 +11,13 @@ app = FastAPI(
     version="1.0.0"
 )
 
+@app.get("/")
+def root():
+    return {
+        "name": "Employee Salary Prediction API",
+        "version": "1.0.0",
+        "endpoints": ["/health", "/metrics", "/predict", "/docs"]
+    }
 
 class EmployeeInput(BaseModel):
     experience_years: int
