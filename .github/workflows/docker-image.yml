@@ -20,8 +20,27 @@ jobs:
       - name: Push to Hugging Face Space
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          git remote add hf https://Stewie-pixel:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Stewie-pixel/employee-salary-prediction
-          git push hf main --force
+          mkdir hf-deploy
+          cp main.py hf-deploy/
+          cp model.py hf-deploy/
+          cp requirements.txt hf-deploy/
+          cp Dockerfile hf-deploy/
+          cp README.md hf-deploy/
+
+          mkdir hf-deploy/models
+          cp models/lr_model.pkl hf-deploy/models/
+          cp models/xgb_model.pkl hf-deploy/models/
+          cp models/feature_names.pkl hf-deploy/models/
+          cp models/encoders.pkl hf-deploy/models/
+          cp models/metrics.pkl hf-deploy/models/
+
+          cd hf-deploy
+          git init
+          git config user.email "github-actions@github.com"
+          git config user.name "github-actions"
+          git add .
+          git commit -m "deploy: ${{ github.sha }}"
+          git push https://Stewie-pixel:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Stewie-pixel/employee-salary-prediction main --force
 
       - name: Trigger central deployment
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
