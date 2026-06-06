@@ -38,6 +38,7 @@ jobs:
           git init
           git config user.email "github-actions@github.com"
           git config user.name "github-actions"
+          git checkout -b main
           git add .
           git commit -m "deploy: ${{ github.sha }}"
           git push https://Stewie-pixel:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Stewie-pixel/employee-salary-prediction main --force
