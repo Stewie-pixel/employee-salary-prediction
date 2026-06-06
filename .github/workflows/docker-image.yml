@@ -49,7 +49,7 @@ jobs:
               repo_id="Stewie-pixel/employee-salary-prediction",
               repo_type="space",
               token="${{ secrets.HF_TOKEN }}",
-              commit_message="deploy: ${{ github.sha }}"
+              commit_message="deploy: ${{ github.sha }}",
               ignore_patterns=["README.md"]
           )
           print("Upload complete")
